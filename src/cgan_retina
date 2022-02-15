@@ -15,14 +15,16 @@ from keras.utils.vis_utils import plot_model
 
 #GAN TRAINING LOOP: https://www.pyimagesearch.com/2020/11/16/gans-with-keras-and-tensorflow/
 
-img_shape = (700, 605, 3)
 
-D = CGAN.discriminator(img_shape[0], img_shape[1], img_shape[2])
-D.summary()
+
+# D.summary()
 train = RetinalImages.retinal_data
-train = train.astype('float32')
-train = (train-127.5)/127.5
-
+img_shape = (train.image_shape[0], train.image_shape[1], train.image_shape[2])
+# train = train.astype('float32')
+# train = (train-127.5)/127.5
+# print(train.image_shape)
+print (train.image_shape)
+D = CGAN.discriminator(inputShape=train.image_shape)
 
 def train_disc(model: CGAN.discriminator, data, iter=20, n_batch=32):
     for i in range(iter):

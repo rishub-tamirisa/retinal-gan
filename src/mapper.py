@@ -9,7 +9,7 @@ import os
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 path = Path(dir_path)
-dir = str(path.parent.absolute()) + "/all-images/train/class_1"
+dir = str(path.parent.absolute()) + "/all-images/train"#/train/class_1"
 save_dir = str(path.parent.absolute()) + "/images"
 
 print(dir)
@@ -20,21 +20,22 @@ print(dir)
 
 class RetinalImages:
 
-    dataset = tf.data.Dataset.list_files(dir+"/*.ppm")
-    for item in dataset:
-        image_raw = tf.io.read_file(item)
-        image = tf.image.decode_image(image_raw)
+    # dataset = tf.data.Dataset.list_files(dir+"/*.ppm")
+    # for item in dataset:
+    #     image_raw = tf.io.read_file(item)
+    #     image = tf.image.decode_image(image_raw)
 
 
 
-    # batch_size = 32
-    # img_height = 700
-    # img_width = 605
-    # train_gen = ImageDataGenerator()
-    # retinal_data = train_gen.flow_from_directory(directory=dir,
-    #     target_size=(img_height, img_width),
-    #     batch_size=batch_size)
-    # retinal_data.shape = [img_height, img_width, 3]
+    batch_size = 16
+    img_height = 700
+    img_width = 605
+    train_gen = ImageDataGenerator()
+    retinal_data = train_gen.flow_from_directory(directory=dir,
+        target_size=(img_height, img_width),
+        batch_size=batch_size)
+    # print(retinal_data._get_batches_of_transformed_samples())
+    #retinal_data.shape = [img_height, img_width, 3]
 
 # train_ds = idfd(
 #   dir,
