@@ -33,12 +33,12 @@ trainImages = RetinalImages.retinal_data
 
 # build the generator
 print("[INFO] building generator...")
-gen = CGAN.build_generator(700, 605, 3, channels=1)
-
+gen = CGAN.build_generator(700, 605, 1, channels=3)
+print(gen.summary())
 # build the discriminator
 print("[INFO] building discriminator...")
 disc = CGAN.build_discriminator(700, 605, 3)
-discOpt = Adam(lr=INIT_LR, beta_1=0.5, decay=INIT_LR / NUM_EPOCHS)
+discOpt = Adam(learning_rate=INIT_LR, beta_1=0.5, decay=INIT_LR / NUM_EPOCHS)
 disc.compile(loss="binary_crossentropy", optimizer=discOpt)
 
 # build the adversarial model by first setting the discriminator to
@@ -51,7 +51,7 @@ ganOutput = disc(gen(ganInput))
 gan = Model(ganInput, ganOutput)
 
 # compile the GAN
-ganOpt = Adam(lr=INIT_LR, beta_1=0.5, decay=INIT_LR / NUM_EPOCHS)
+ganOpt = Adam(learning_rate=INIT_LR, beta_1=0.5, decay=INIT_LR / NUM_EPOCHS)
 gan.compile(loss="binary_crossentropy", optimizer=discOpt)
 
 # randomly generate some benchmark noise so we can consistently
@@ -71,10 +71,9 @@ for epoch in range(0, NUM_EPOCHS):
 	for i in range(0, batchesPerEpoch):
 		# initialize an (empty) output path
 		p = None
-
 		# select the next batch of images, then randomly generate
 		# noise for the generator to predict on
-		imageBatch = trainImages[i * BATCH_SIZE:(i + 1) * BATCH_SIZE]
+		imageBatch = trainImages.next()
 		noise = np.random.uniform(-1, 1, size=(BATCH_SIZE, 100))
 
 # generate images using the noise + generator model
