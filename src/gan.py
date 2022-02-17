@@ -1,3 +1,4 @@
+from xml.sax.xmlreader import XMLReader
 import numpy as np
 from pathlib import Path
 from tensorflow.keras.models import Sequential
@@ -10,6 +11,7 @@ from tensorflow.keras.layers import Conv2DTranspose, LeakyReLU, BatchNormalizati
 import mapper
 import tensorflow as tf
 from tensorflow.keras.optimizers import Adam
+import mnist
 
 class CGAN:
     def generator(width, height, depth, channels=3, inputDim=100, outputDim=128):
@@ -53,22 +55,10 @@ class CGAN:
         return model
 
     def gen_real(dataset : mapper.RetinalImages.retinal_data, n_samples):
-        # print(dataset.samples)
-
         seed = randint(0, high=int(dataset.samples), size=n_samples)
         print(seed)
-        # dataset.index_array = seed
-        # x = np.zeros((len(seed),) + dataset.image_shape, dtype=dataset.dtype)
         x = dataset._get_batches_of_transformed_samples(index_array=seed)
-        x = tf.unstack(x[0], axis=0)
-        # print(x)
-        for i in x:
-            print(i.shape)
-        x = np.reshape(1,-1)
-        y = np.ones((n_samples, 1))
-        print(y,shape)
-        # print(x.shape)
-        return x, y
+        return x[0], x[1]
     
     def gen_noise(x, y, z, n_samples):
         seed = rand(x * y * z * n_samples)

@@ -7,6 +7,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.datasets import fashion_mnist
 from sklearn.utils import shuffle
 from imutils import build_montages
+import tensorflow as tf
 import numpy as np
 import argparse
 import cv2
@@ -29,6 +30,7 @@ D = CGAN.discriminator(inputShape=train.image_shape)
 def train_disc(model: CGAN.discriminator, data, iter=20, n_batch=32):
     for i in range(iter):
         xreal, yreal = CGAN.gen_real(data, int(n_batch/2))
+        
         _, D_real = model.train_on_batch(xreal, yreal)
         xfake, yfake = CGAN.gen_noise(img_shape[0], img_shape[1], img_shape[2], int(n_batch/2))
         _, D_noise = model.train_on_batch(xfake, yfake)
