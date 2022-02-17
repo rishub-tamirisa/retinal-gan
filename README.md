@@ -1,5 +1,5 @@
 # retinal-gan
-A general adversarial network used to recreate retinal images for disease classification.
+A generative adversarial network used to recreate retinal images for disease classification.
 
 ## Dataset
 The set of retinal images comes from the STARE project: http://cecas.clemson.edu/~ahoover/stare/
