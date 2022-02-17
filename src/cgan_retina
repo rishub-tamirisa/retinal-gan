@@ -17,6 +17,7 @@ D = CGAN.discriminator(inputShape=img_shape)#train.image_shape)
 G = CGAN.generator(res=0.01,inputShape=img_shape)#train.image_shape)
 GAN = CGAN.gan(G, D)
 print (G.summary())
+#Training routine adapted from machine learning mastery's GAN development article
 
 # def train_disc(model: CGAN.discriminator, data, iter=20, n_batch=32):
 #     for i in range(iter):
