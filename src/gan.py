@@ -11,26 +11,24 @@ from tensorflow.keras.layers import Conv2DTranspose, LeakyReLU, BatchNormalizati
 import mapper
 import tensorflow as tf
 from tensorflow.keras.optimizers import Adam
-import mnist
 
 class CGAN:
-    def generator(width, height, depth, channels=3, inputDim=100, outputDim=128):
-        model = Sequential()
-        inputShape = (width, height, depth)
-        chanDim = 3
+    def generator(res, inputShape, latent=100, outputDim=128, alpha=0.2):
+        print(inputShape[0] * inputShape[1] * outputDim)
         model = Sequential([
-            Dense(input_dim=inputDim, units=outputDim),
-            Activation("relu"),
+            Dense(units=int(inputShape[0]* res * inputShape[1] * res * outputDim), input_dim=latent),
+            LeakyReLU(alpha=alpha),
+            Reshape((int(inputShape[0] * res), int(inputShape[1] * res), outputDim)),
             BatchNormalization(),
-            Dense(width * height * depth),
-            Activation("relu"),
+            Conv2DTranspose(64, (5, 5), padding="same", strides=(10, 10)),
+            LeakyReLU(alpha=alpha),
             BatchNormalization(),
-            Reshape(inputShape),
-            Conv2DTranspose(32, (5, 5), strides=(8, 2), padding="valid"),
-            Activation("relu"),
-            BatchNormalization(axis=chanDim),
-            Conv2DTranspose(channels, (5, 5), strides=(4, 4), padding="same"),
-            Activation("tanh"),
+            Conv2DTranspose(32, (5, 5), padding="same", strides=(5, 5)),
+            LeakyReLU(alpha=alpha),
+            BatchNormalization(),
+            Conv2DTranspose(32, (4, 4), padding="same", strides=(2, 2)),
+            LeakyReLU(alpha=alpha),
+            Conv2D(3, (int(inputShape[0] * res), int(inputShape[1] * res)), activation='sigmoid', padding="same")
         ])
 
         return model
@@ -50,7 +48,7 @@ class CGAN:
             Dropout(0.4),
             Dense(1, activation="sigmoid"),
         ])
-        model.compile(loss='binary_crossentropy', optimizer=Adam(lr=0.0002, beta_1=0.5), metrics=['accuracy'])
+        model.compile(loss='binary_crossentropy', optimizer=Adam(learning_rate=0.0002, beta_1=0.5), metrics=['accuracy'])
 
         return model
 

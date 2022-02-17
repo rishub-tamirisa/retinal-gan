@@ -29,11 +29,12 @@ class RetinalImages:
 
     batch_size = 16
     img_height = 700
-    img_width = 605
+    img_width = 600
     train_gen = ImageDataGenerator()
     retinal_data = train_gen.flow_from_directory(directory=dir,
-        target_size=(img_height, img_width),
+        target_size=(img_height, 600),
         batch_size=batch_size)
+    
     # print(retinal_data._get_batches_of_transformed_samples())
     #retinal_data.shape = [img_height, img_width, 3]
 
