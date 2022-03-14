@@ -6,3 +6,9 @@ The set of retinal images comes from the STARE project: http://cecas.clemson.edu
 
 ## Implementation
 This repository contains an implementation of a Deep Convolutional Generative Adversarial Network (DCGAN) on a dataset of retinal images.
+
+```
+public static void main(String[][] args) {
+
+}
+```
